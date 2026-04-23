@@ -34,7 +34,7 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 	utils.SuccessResponse(c, http.StatusCreated, "User berhasil dibuat", user)
 }
 
-func (ctrl *UserController) GetUser(c *gin.Context) {
+func (ctrl *UserController) GetUserByID(c *gin.Context) {
 
 	userID, _ := strconv.Atoi(c.Param("id"))
 
@@ -47,7 +47,7 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", user)
 }
 
-func (ctrl *UserController) GetAllUser(c *gin.Context) {
+func (ctrl *UserController) GetAllUsers(c *gin.Context) {
 
 	users, err := ctrl.service.GetAll()
 	if err != nil {
