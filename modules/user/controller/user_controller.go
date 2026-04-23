@@ -44,7 +44,7 @@ func (ctrl *UserController) GetUserByID(c *gin.Context) {
 		return
 	}
 
-	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", user)
+	utils.SuccessResponse(c, http.StatusOK, "Profil user berhasil didapatkan", user)
 }
 
 func (ctrl *UserController) GetAllUsers(c *gin.Context) {
@@ -55,5 +55,5 @@ func (ctrl *UserController) GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", users)
+	utils.SuccessResponse(c, http.StatusOK, "Profil user berhasil didapatkan", users)
 }
