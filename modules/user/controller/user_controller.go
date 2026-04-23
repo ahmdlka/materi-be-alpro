@@ -38,60 +38,24 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 
 	userID, _ := strconv.Atoi(c.Param("id"))
 
-	profile, err := ctrl.service.Get(
-		c.Request.Context(),
-		userID,
-	)
+	user, err := ctrl.service.Get(userID)
 	if err != nil {
-		c.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"success": false,
-				"message": "failed to get user profile",
-			},
-		)
+		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mendapatkan profil user")
 		return
 	}
 
-	c.JSON(
-		http.StatusOK,
-		gin.H{
-			"success": true,
-			"message": "User profile retrieved successfully",
-			"data": gin.H{
-				"id":       profile.ID,
-				"name":     profile.Name,
-				"email":    profile.Email,
-				"password": profile.Password,
-			},
-		},
-	)
+	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", user)
 }
 
 func (ctrl *UserController) GetAllUser(c *gin.Context) {
 
 	// Mengambil properti berdasarkan filter
-	data, err := ctrl.service.GetAll(
-		c.Request.Context(),
-	)
+	users, err := ctrl.service.GetAll()
 	if err != nil {
-		c.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"success": false,
-				"message": err.Error(),
-			},
-		)
+		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mendapatkan profil users")
 		return
 	}
 
 	// Response sukses dengan metadata pagination
-	c.JSON(
-		http.StatusOK,
-		gin.H{
-			"success": true,
-			"message": "get property data with filter and pagination",
-			"data":    data,
-		},
-	)
+	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", users)
 }

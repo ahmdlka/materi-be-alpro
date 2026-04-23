@@ -19,18 +19,18 @@ func (r *UserRepository) Create(user *entities.User) error {
 
 func (r *UserRepository) FindByEmail(email string) (*entities.User, error) {
 	var user entities.User
-	err := r.db.Where("email = ?", email).First(&user).Error
+	err := r.db.Select("id", "name", "email", "role").Where("email = ?", email).First(&user).Error
 	return &user, err
 }
 
 func (r *UserRepository) FindByID(id int) (*entities.User, error) {
 	var user entities.User
-	err := r.db.Where("id = ?", id).First(&user).Error
+	err := r.db.Select("id", "name", "email", "role").Where("id = ?", id).First(&user).Error
 	return &user, err
 }
 
 func (r *UserRepository) FindAll() ([]entities.User, error) {
 	var users []entities.User
-	result := r.db.Find(&users)
+	result := r.db.Select("id", "name", "email", "role").Find(&users)
 	return users, result.Error
 }
