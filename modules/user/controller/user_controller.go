@@ -40,7 +40,7 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 
 	user, err := ctrl.service.Get(userID)
 	if err != nil {
-		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mendapatkan profil user")
+		utils.ErrorResponse(c, http.StatusNotFound, "Gagal mendapatkan profil user")
 		return
 	}
 
@@ -49,13 +49,11 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 
 func (ctrl *UserController) GetAllUser(c *gin.Context) {
 
-	// Mengambil properti berdasarkan filter
 	users, err := ctrl.service.GetAll()
 	if err != nil {
-		utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mendapatkan profil users")
+		utils.ErrorResponse(c, http.StatusNotFound, "Gagal mendapatkan profil users")
 		return
 	}
 
-	// Response sukses dengan metadata pagination
 	utils.SuccessResponse(c, http.StatusCreated, "Profil user berhasil didapatkan", users)
 }
