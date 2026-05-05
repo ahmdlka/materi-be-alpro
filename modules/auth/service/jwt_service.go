@@ -5,8 +5,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/Mobilizes/materi-be-alpro/database/entities"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
 type JWTService struct {
@@ -22,9 +23,8 @@ func NewJWTService() *JWTService {
 }
 
 type CustomClaim struct {
-	UserID uint   `json:"user_id"`
-	Email  string `json:"email"`
-	Role   string `json:"role"`
+	UserID uuid.UUID `json:"user_id"`
+	Email  string    `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -32,7 +32,6 @@ func (s *JWTService) GenerateToken(user *entities.User) (string, error) {
 	claims := CustomClaim{
 		user.ID,
 		user.Email,
-		user.Role,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),

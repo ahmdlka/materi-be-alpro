@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/Mobilizes/materi-be-alpro/database/entities"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -23,14 +24,24 @@ func (r *UserRepository) FindByEmail(email string) (*entities.User, error) {
 	return &user, err
 }
 
-func (r *UserRepository) FindByID(id int) (*entities.User, error) {
+func (r *UserRepository) FindByID(id uuid.UUID) (*entities.User, error) {
 	var user entities.User
-	err := r.db.Select("id", "name", "email", "role").Where("id = ?", id).First(&user).Error
+	err := r.db.Preload("Profile").Where("id = ?", id).First(&user).Error
 	return &user, err
 }
 
 func (r *UserRepository) FindAll() ([]entities.User, error) {
 	var users []entities.User
-	result := r.db.Select("id", "name", "email", "role").Find(&users)
+	result := r.db.Preload("Profile").Find(&users)
 	return users, result.Error
+}
+
+func (r *UserRepository) UpdateProfile(profile *entities.UserProfile) error {
+	return r.db.Save(profile).Error
+}
+
+func (r *UserRepository) GetProfileByUserID(userID uuid.UUID) (*entities.UserProfile, error) {
+	var profile entities.UserProfile
+	err := r.db.Where("user_id = ?", userID).First(&profile).Error
+	return &profile, err
 }

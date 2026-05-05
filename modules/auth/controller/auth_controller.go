@@ -33,3 +33,19 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 
 	utils.SuccessResponse(c, http.StatusOK, "Login berhasil", dto.TokenResponse{Token: token})
 }
+
+func (ctrl *AuthController) Register(c *gin.Context) {
+	req, err := validation.ValidateRegister(c)
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	token, err := ctrl.authService.Register(req)
+	if err != nil {
+		utils.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	utils.SuccessResponse(c, http.StatusCreated, "Registrasi berhasil", dto.TokenResponse{Token: token})
+}
